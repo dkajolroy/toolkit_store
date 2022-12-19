@@ -4,17 +4,10 @@ const initialState = {
   item: [],
 };
 
-const cartSlice = createSlice({
+export const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {
-    addToCart: () => {
-      console.log("Add Success");
-    },
-    removeFromCart: () => {
-      console.log("Remove Success");
-    },
-  },
+  reducers: {},
 });
 
 export default cartSlice.reducer;
