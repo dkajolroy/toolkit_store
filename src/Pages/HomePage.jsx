@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 import { Stack } from '@mui/system';
 import { Box, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from '../Redux/Slice/CartSlice';
+import { fetchUser } from '../Redux/Slice/ProductSlice';
+import { addToCart } from '../Redux/Slice/CartSlice';
 
 export default function HomePage() {
     const dispatch = useDispatch()
@@ -12,15 +13,31 @@ export default function HomePage() {
 
 
     const { users } = useSelector(x => x.productState)
+    const addCart = (item) => {
+        dispatch(addToCart(item))
+    }
     return (
-        <Stack>
-            <Box display='flex' justifyContent='center' mt={20}>
-                <Button variant='contained' >Increment</Button>
-                <Box fontSize={50} mx={5}>
-                    {users.length}
-                </Box>
-                <Button variant='contained' color='secondary' >Decrement</Button>
-            </Box>
+        <Stack direction="row" flexWrap="wrap">
+            {
+                users.map((x, i) => (
+                    <Box key={i} width="20%" >
+                        <Box
+                            m={1}
+                            borderRadius={1}
+                            display="flex"
+                            flexDirection="column"
+                            boxShadow="0 5px 10px gray">
+                            <Box style={{ background: "lightgray" }} height={120}></Box>
+                            <Box my={1}>
+                                <span >{x.name}</span>
+                            </Box>
+                            <Button onClick={() => addCart(x)} variant='contained' color='secondary' >
+                                Add to Cart
+                            </Button>
+                        </Box>
+                    </Box>
+                ))
+            }
         </Stack>
     )
 }

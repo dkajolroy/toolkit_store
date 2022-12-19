@@ -1,34 +1,19 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice } from "@reduxjs/toolkit";
 
-export const fetchUser = createAsyncThunk("user/fetch", () => {
-  return axios
-    .get("https://jsonplaceholder.typicode.com/users")
-    .then((response) => response.data);
-});
 const initialState = {
-  users: [],
-  loading: false,
-  error: "",
+  products: [],
 };
-
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  extraReducers: (builder) => {
-    builder.addCase(fetchUser.pending, (state) => {
-      state.loading = true;
-    });
-    builder.addCase(fetchUser.fulfilled, (state, action) => {
-      state.loading = false;
-      state.users = action.payload;
-      state.error = "";
-    });
-    builder.addCase(fetchUser.rejected, (state, action) => {
-      state.error = action.error.message;
-      state.users = [];
-    });
+  reducers: {
+    addToCart: (state, action) => {
+      state.products.push(action.payload);
+    },
+    removeFromCart: (state, action) => {
+      state.products = state.products.filter((x) => x.id !== action.payload.id);
+    },
   },
 });
-
+export const { addToCart, removeFromCart } = cartSlice.actions;
 export default cartSlice.reducer;
